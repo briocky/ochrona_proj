@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      show_sql: true
+      format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ochrona_proj
+
+security:
+  pepper: sdg@1ae7a!B%kul%
+  jwt:
+    secret: aWx1aXNkZmxpYW5maWZtczEyMzEyMzE0emxtY3p4Y2tvc2FrbWRvYWtkbW0xMjMxNTQzNjQ2NQ==
+    accessToken:
+      expiration: 86400000
+    refreshToken:
+      expiration: 1209600000
+  cookie:
+    domain: localhost
+    max-age: 345600
+
+logging:
+  level:
+    org.springframework.security: debug
