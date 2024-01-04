@@ -12,10 +12,8 @@ import pl.edu.pw.ee.secureloansystem.domain.user.entity.User;
 @Repository
 interface LoanRepository extends JpaRepository<Loan, Long> {
   Page<Loan> findAllByBorrower(User borrower, Pageable pageable);
-  Optional<Loan> findLoanByIdAndLenderAndStatus(
-    Long loanId,
-    User lender,
-    LoanStatus status
-  );
+
+  Optional<Loan> findLoanByIdAndLenderAndStatus(Long loanId, User lender, LoanStatus status);
+
   Page<Loan> findAllByLender(User lender, Pageable pageable);
 }

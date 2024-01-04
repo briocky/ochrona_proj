@@ -27,33 +27,27 @@ class LoanController {
 
   @GetMapping("/my/all")
   public ResponseEntity<Page<LoanDto>> getAllUserLoans(
-    @RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "10") int size
-  ) {
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
     PageRequest pageRequest = PageRequest.of(page, size);
     return ResponseEntity.ok(loanService.getAllUserLoans(pageRequest));
   }
 
   @PostMapping("/new")
   public ResponseEntity<LoanDto> makeNewLoan(@RequestBody LoanRequest request) {
-    return ResponseEntity
-      .status(HttpStatus.CREATED)
-      .body(loanService.makeNewLoan(request));
+    return ResponseEntity.status(HttpStatus.CREATED).body(loanService.makeNewLoan(request));
   }
 
   @PutMapping("/{id}/respond")
   public ResponseEntity<LoanDto> respondToLoanRequest(
-    @PathVariable("id") Long loanId,
-    @RequestParam("action") LoanRequestAction action
-  ) {
+      @PathVariable("id") Long loanId,
+      @RequestParam("action") LoanRequestAction action) {
     return ResponseEntity.ok(loanService.respondToLoanRequest(loanId, action));
   }
 
   @GetMapping("/requests/all")
   public ResponseEntity<Page<LoanLenderDto>> getAllLoanRequest(
-    @RequestParam(defaultValue = "0") int page,
-    @RequestParam(defaultValue = "10") int size
-  ) {
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
     PageRequest pageRequest = PageRequest.of(page, size, Sort.by("status"));
     return ResponseEntity.ok(loanService.getAllLoanRequests(pageRequest));
   }

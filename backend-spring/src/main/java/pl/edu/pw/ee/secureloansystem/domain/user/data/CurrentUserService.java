@@ -12,12 +12,8 @@ public class CurrentUserService {
 
   public AuthUser getCurrentUser() {
     return Optional
-      .ofNullable(
-        (AuthUser) SecurityContextHolder
-          .getContext()
-          .getAuthentication()
-          .getPrincipal()
-      )
-      .orElseThrow(() -> new RuntimeException("Principal could not be found"));
+        .ofNullable(
+            (AuthUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+        .orElseThrow(() -> new RuntimeException("Principal could not be found"));
   }
 }

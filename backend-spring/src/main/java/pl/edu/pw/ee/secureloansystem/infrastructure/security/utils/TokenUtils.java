@@ -33,13 +33,9 @@ public class TokenUtils {
   }
 
   private String generateToken(UserDetails userDetails, long expirationMilis) {
-    return Jwts
-      .builder()
-      .setSubject(userDetails.getUsername())
-      .setIssuedAt(new Date())
-      .setExpiration(new Date(new Date().getTime() + expirationMilis))
-      .signWith(getSigningKey())
-      .compact();
+    return Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date())
+        .setExpiration(new Date(new Date().getTime() + expirationMilis)).signWith(getSigningKey())
+        .compact();
   }
 
   public String extractEmail(String token) {
@@ -49,13 +45,8 @@ public class TokenUtils {
   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
     Claims claims;
     try {
-      claims =
-      Jwts
-        .parserBuilder()
-        .setSigningKey(getSigningKey())
-        .build()
-        .parseClaimsJws(token)
-        .getBody();
+      claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
+          .getBody();
     } catch (ExpiredJwtException ex) {
       claims = ex.getClaims();
     }

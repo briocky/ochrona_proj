@@ -28,19 +28,14 @@ public class SecurityConfiguration {
   final TokenFilter tokenFilter;
 
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http)
-    throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.cors(Customizer.withDefaults());
     http.csrf(AbstractHttpConfigurer::disable);
 
-    http.sessionManagement(session ->
-      session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-    );
+    http.sessionManagement(
+        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    http.addFilterBefore(
-      tokenFilter,
-      UsernamePasswordAuthenticationFilter.class
-    );
+    http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     http.authorizeHttpRequests(request -> {
       request.requestMatchers("/api/auth/login").permitAll();
@@ -59,9 +54,7 @@ public class SecurityConfiguration {
 
   @Bean
   public AuthenticationProvider authenticationProvider(
-    PasswordEncoder encoder,
-    UserDetailsService userService
-  ) {
+      PasswordEncoder encoder, UserDetailsService userService) {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
     provider.setPasswordEncoder(encoder);
     provider.setUserDetailsService(userService);

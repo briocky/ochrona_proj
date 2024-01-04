@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,12 +26,9 @@ public class MyPasswordEncoder implements PasswordEncoder {
   @Override
   public String encode(CharSequence rawPassword) {
     ByteBuffer salt = generateSalt();
-    ByteBuffer pepperBytes = ByteBuffer.wrap(
-      pepper.getBytes(StandardCharsets.UTF_8)
-    );
-    ByteBuffer rawPasswordBytes = ByteBuffer.wrap(
-      rawPassword.toString().getBytes(StandardCharsets.UTF_8)
-    );
+    ByteBuffer pepperBytes = ByteBuffer.wrap(pepper.getBytes(StandardCharsets.UTF_8));
+    ByteBuffer rawPasswordBytes = ByteBuffer
+        .wrap(rawPassword.toString().getBytes(StandardCharsets.UTF_8));
 
     ByteBuffer saltedPassword = addBytesToStart(salt, rawPasswordBytes);
     ByteBuffer pepperedPassword = addBytesToEnd(pepperBytes, saltedPassword);
@@ -44,21 +42,15 @@ public class MyPasswordEncoder implements PasswordEncoder {
 
   @Override
   public boolean matches(CharSequence rawPassword, String encodedPassword) {
-    ByteBuffer rawPasswordBytes = ByteBuffer.wrap(
-      rawPassword.toString().getBytes(StandardCharsets.UTF_8)
-    );
-    ByteBuffer decodedPassword = ByteBuffer.wrap(
-      Base64.getDecoder().decode(encodedPassword)
-    );
+    ByteBuffer rawPasswordBytes = ByteBuffer
+        .wrap(rawPassword.toString().getBytes(StandardCharsets.UTF_8));
+    ByteBuffer decodedPassword = ByteBuffer.wrap(Base64.getDecoder().decode(encodedPassword));
 
-    byte[] hashedPasswordArray = new byte[decodedPassword.capacity() -
-    SALT_LENGTH];
+    byte[] hashedPasswordArray = new byte[decodedPassword.capacity() - SALT_LENGTH];
     byte[] saltArray = new byte[SALT_LENGTH];
     decodedPassword.get(saltArray);
     ByteBuffer salt = ByteBuffer.wrap(saltArray);
-    ByteBuffer pepperBytes = ByteBuffer.wrap(
-      pepper.getBytes(StandardCharsets.UTF_8)
-    );
+    ByteBuffer pepperBytes = ByteBuffer.wrap(pepper.getBytes(StandardCharsets.UTF_8));
 
     ByteBuffer saltedPassword = addBytesToStart(salt, rawPasswordBytes);
     ByteBuffer pepperedPassword = addBytesToEnd(pepperBytes, saltedPassword);
@@ -69,10 +61,7 @@ public class MyPasswordEncoder implements PasswordEncoder {
     return hashedPassword.equals(ByteBuffer.wrap(hashedPasswordArray));
   }
 
-  private static ByteBuffer addBytesToStart(
-    ByteBuffer content,
-    ByteBuffer destination
-  ) {
+  private static ByteBuffer addBytesToStart(ByteBuffer content, ByteBuffer destination) {
     int bufferSize = content.capacity() + destination.capacity();
     ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
 
@@ -82,10 +71,7 @@ public class MyPasswordEncoder implements PasswordEncoder {
     return byteBuffer;
   }
 
-  private static ByteBuffer addBytesToEnd(
-    ByteBuffer content,
-    ByteBuffer destination
-  ) {
+  private static ByteBuffer addBytesToEnd(ByteBuffer content, ByteBuffer destination) {
     int bufferSize = content.capacity() + destination.capacity();
     ByteBuffer byteBuffer = ByteBuffer.allocate(bufferSize);
 

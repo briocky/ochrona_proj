@@ -25,4 +25,4 @@ security:
 
 logging:
   level:
-    org.springframework.security: debug
+    org.springframework.security: trace

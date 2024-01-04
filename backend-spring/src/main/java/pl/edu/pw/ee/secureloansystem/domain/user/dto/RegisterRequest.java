@@ -30,10 +30,7 @@ public class RegisterRequest {
   String email;
 
   @NotNull
-  @Pattern(
-    regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=])(?=\\S+$).{5,50}$",
-    message = "Password must contain at last: 1 lowercase letter, 1 uppercase letter, 1 digit, 1 special character"
-  )
+  @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=])(?=\\S+$).{5,50}$", message = "Password must contain at last: 1 lowercase letter, 1 uppercase letter, 1 digit, 1 special character")
   String password;
 
   String confirmPassword;

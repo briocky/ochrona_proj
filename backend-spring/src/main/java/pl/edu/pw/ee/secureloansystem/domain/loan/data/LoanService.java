@@ -36,12 +36,9 @@ public class LoanService {
 
   public LoanDto makeNewLoan(LoanRequest request) {
     Loan loan = loanMapper.getModel(request);
-    User borrower = userManagementService.getUserByEmail(
-      currentUserService.getCurrentUser().getEmail()
-    );
-    User lender = userManagementService.getUserByEmail(
-      request.getLenderEmail()
-    );
+    User borrower = userManagementService
+        .getUserByEmail(currentUserService.getCurrentUser().getEmail());
+    User lender = userManagementService.getUserByEmail(request.getLenderEmail());
     loan.setBorrower(borrower);
     loan.setLender(lender);
     loan.setStatus(LoanStatus.WAITING);
@@ -54,54 +51,38 @@ public class LoanService {
   public Page<LoanDto> getAllUserLoans(PageRequest pageRequest) {
     AuthUser currentUser = currentUserService.getCurrentUser();
     Page<Loan> userLoans = loanRepository.findAllByBorrower(
-      userManagementService.getUserByEmail(currentUser.getEmail()),
-      pageRequest
-    );
+        userManagementService.getUserByEmail(currentUser.getEmail()), pageRequest);
     return userLoans.map(loanMapper::getLoanDto);
   }
 
   public LoanDto respondToLoanRequest(Long loanId, LoanRequestAction action) {
-    Optional<Loan> loanToRespond =
-      loanRepository.findLoanByIdAndLenderAndStatus(
-        loanId,
-        userManagementService.getUserByEmail(
-          currentUserService.getCurrentUser().getEmail()
-        ),
-        LoanStatus.WAITING
-      );
+    Optional<Loan> loanToRespond = loanRepository.findLoanByIdAndLenderAndStatus(loanId,
+        userManagementService.getUserByEmail(currentUserService.getCurrentUser().getEmail()),
+        LoanStatus.WAITING);
 
     if (loanToRespond.isPresent()) {
       return loanMapper.getLoanDto(respondToLoan(loanToRespond.get(), action));
     }
 
-    throw LoanNotFoundException.of(
-      String.format("Loan id=%d could not be found", loanId)
-    );
+    throw LoanNotFoundException.of(String.format("Loan id=%d could not be found", loanId));
   }
 
   public Page<LoanLenderDto> getAllLoanRequests(PageRequest pageRequest) {
     String currentUserEmail = currentUserService.getCurrentUser().getEmail();
-    Page<Loan> loanRequests = loanRepository.findAllByLender(
-      userManagementService.getUserByEmail(currentUserEmail),
-      pageRequest
-    );
+    Page<Loan> loanRequests = loanRepository
+        .findAllByLender(userManagementService.getUserByEmail(currentUserEmail), pageRequest);
     return loanRequests.map(loanMapper::getLoanLenderDto);
   }
 
   public LoanDto paybackTheLoan(Long id) {
     String currentUserEmail = currentUserService.getCurrentUser().getEmail();
-    Loan loan = loanRepository
-      .findById(id)
-      .orElseThrow(() ->
-        LoanNotFoundException.of(String.format("Loan id=%d not found", id))
-      );
+    Loan loan = loanRepository.findById(id)
+        .orElseThrow(() -> LoanNotFoundException.of(String.format("Loan id=%d not found", id)));
 
     if (loan.getStatus().equals(LoanStatus.ACCEPTED)) {
       return loanMapper.getLoanDto(repayLoan(loan, currentUserEmail));
     } else {
-      throw LoanNotFoundException.of(
-        String.format("Loan id=%d is not accepted!", id)
-      );
+      throw LoanNotFoundException.of(String.format("Loan id=%d is not accepted!", id));
     }
   }
 
@@ -112,9 +93,7 @@ public class LoanService {
         debtService.updateUserDebtInfo(loan);
       }
       case REJECT -> loan.setStatus(LoanStatus.REJECTED);
-      default -> throw UnknownLoanRequestAction.of(
-        String.format("%s action is unknown", action)
-      );
+      default -> throw UnknownLoanRequestAction.of(String.format("%s action is unknown", action));
     }
     return loanRepository.save(loan);
   }
@@ -128,9 +107,8 @@ public class LoanService {
 
       return loanRepository.save(loan);
     } else {
-      throw IncorrectLoanOwnerException.of(
-        String.format("%s is not the owner of this loan", currentUserEmail)
-      );
+      throw IncorrectLoanOwnerException
+          .of(String.format("%s is not the owner of this loan", currentUserEmail));
     }
   }
 }

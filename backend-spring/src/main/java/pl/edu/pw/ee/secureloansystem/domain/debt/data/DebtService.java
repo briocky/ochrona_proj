@@ -31,8 +31,7 @@ public class DebtService {
       debt = debtByUser.get();
       updateDebtAmount(debt, loan);
     } else {
-      debt =
-      Debt.builder().user(borrower).totalAmount(loan.getAmount()).build();
+      debt = Debt.builder().user(borrower).totalAmount(loan.getAmount()).build();
     }
     debtRepository.save(debt);
   }

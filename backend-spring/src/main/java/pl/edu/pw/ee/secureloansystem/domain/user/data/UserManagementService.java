@@ -16,13 +16,8 @@ public class UserManagementService {
   final UserRepository userRepository;
 
   public User getUserByEmail(String email) {
-    return userRepository
-      .findByEmail(email)
-      .orElseThrow(() ->
-        UserNotFoundException.of(
-          String.format("User with email=%s could not be found", email)
-        )
-      );
+    return userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException
+        .of(String.format("User with email=%s could not be found", email)));
   }
 
   public Optional<User> getUserOptionalByEmail(String email) {

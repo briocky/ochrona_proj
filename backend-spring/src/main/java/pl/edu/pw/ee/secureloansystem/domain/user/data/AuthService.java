@@ -33,10 +33,8 @@ public class AuthService {
 
     User userByEmail = userManagementService.getUserByEmail(request.getEmail());
 
-    boolean passwordMatches = passwordEncoder.matches(
-      request.getPassword(),
-      userByEmail.getPassword()
-    );
+    boolean passwordMatches = passwordEncoder.matches(request.getPassword(),
+        userByEmail.getPassword());
 
     if (!passwordMatches) {
       throw BadPasswordException.of("Passwords not match!");
@@ -49,13 +47,9 @@ public class AuthService {
   }
 
   public RegisterResponse registerUser(RegisterRequest request) {
-    Optional<User> userOptional = userManagementService.getUserOptionalByEmail(
-      request.getEmail()
-    );
+    Optional<User> userOptional = userManagementService.getUserOptionalByEmail(request.getEmail());
     if (userOptional.isPresent()) {
-      throw EmailTakenException.of(
-        String.format("Email %s already taken.", request.getEmail())
-      );
+      throw EmailTakenException.of(String.format("Email %s already taken.", request.getEmail()));
     }
 
     User mappedUser = userMapper.getModel(request);
@@ -63,13 +57,9 @@ public class AuthService {
 
     User savedUser = userManagementService.createUser(mappedUser);
 
-    RegisterResponse registerResponse = userMapper.getRegisterResponse(
-      savedUser
-    );
+    RegisterResponse registerResponse = userMapper.getRegisterResponse(savedUser);
     registerResponse.setAccessToken(tokenUtils.generateAccessToken(savedUser));
-    registerResponse.setRefreshToken(
-      tokenUtils.generateRefreshToken(savedUser)
-    );
+    registerResponse.setRefreshToken(tokenUtils.generateRefreshToken(savedUser));
     return registerResponse;
   }
 
@@ -77,10 +67,7 @@ public class AuthService {
     try {
       Thread.sleep(BRUTE_FORCE_PREVENTION_SLEEP_MILLIS);
     } catch (InterruptedException e) {
-      throw new RuntimeException(
-        "An error occurred while preventing brute force attack.",
-        e
-      );
+      throw new RuntimeException("An error occurred while preventing brute force attack.", e);
     }
   }
 }

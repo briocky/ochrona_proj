@@ -16,10 +16,7 @@ public class CookieService {
   @Value("${security.cookie.max-age}")
   private int maxAge;
 
-  public void addRefreshTokenCookie(
-    HttpServletResponse response,
-    String refreshToken
-  ) {
+  public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
     response.addCookie(makeRefreshTokenCookie(refreshToken));
   }
 
