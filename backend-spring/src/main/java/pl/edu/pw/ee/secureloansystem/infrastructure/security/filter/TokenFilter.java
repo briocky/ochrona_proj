@@ -5,9 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +20,8 @@ import pl.edu.pw.ee.secureloansystem.domain.user.entity.User;
 import pl.edu.pw.ee.secureloansystem.domain.user.mapper.UserMapper;
 import pl.edu.pw.ee.secureloansystem.infrastructure.exception.TokenExpiredException;
 import pl.edu.pw.ee.secureloansystem.infrastructure.security.utils.TokenUtils;
+
+import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
@@ -48,10 +47,10 @@ public class TokenFilter extends OncePerRequestFilter {
 
     if (authHeader != null && authHeader.startsWith(AUTH_HEADER_PREFIX)) {
       final String token = authHeader.substring(AUTH_HEADER_PREFIX.length());
-      checkTokenExpiration(token, TOKEN_EXPIRED_MSG, response);
+      checkTokenExpiration(token, TOKEN_EXPIRED_MSG);
       authenticateUserFromToken(token);
     } else if (refreshToken != null && request.getRequestURI().equals(REFRESH_TOKEN_URI)) {
-      checkTokenExpiration(refreshToken, REFRESH_TOKEN_EXPIRED_MSG, response);
+      checkTokenExpiration(refreshToken, REFRESH_TOKEN_EXPIRED_MSG);
       authenticateUserFromToken(refreshToken);
     } else {
       log.debug("Token not found");
@@ -85,12 +84,9 @@ public class TokenFilter extends OncePerRequestFilter {
     return refreshTokenValue;
   }
 
-  private void checkTokenExpiration(String token, String message, HttpServletResponse response)
-      throws IOException {
+  private void checkTokenExpiration(String token, String message) {
     if (tokenUtils.isTokenExpired(token)) {
       log.debug(message);
-//      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//      response.getWriter().write(message);
       throw TokenExpiredException.of(message);
     }
   }

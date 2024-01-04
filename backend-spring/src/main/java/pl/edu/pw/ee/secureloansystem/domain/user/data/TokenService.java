@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import pl.edu.pw.ee.secureloansystem.domain.user.dto.RefreshTokenResponse;
 import pl.edu.pw.ee.secureloansystem.domain.user.entity.User;
-import pl.edu.pw.ee.secureloansystem.infrastructure.exception.TokenExpiredException;
 import pl.edu.pw.ee.secureloansystem.infrastructure.security.utils.TokenUtils;
 
 @Service
