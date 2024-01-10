@@ -21,6 +21,7 @@ import pl.edu.pw.ee.secureloansystem.domain.loan.dto.LoanRequestAction;
 @RequestMapping("/api/loan")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000")
 class LoanController {
 
   final LoanService loanService;
