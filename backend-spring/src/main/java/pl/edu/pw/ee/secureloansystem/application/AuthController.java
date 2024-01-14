@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pw.ee.secureloansystem.domain.user.data.AuthService;
 import pl.edu.pw.ee.secureloansystem.domain.user.data.TokenService;
+import pl.edu.pw.ee.secureloansystem.domain.user.dto.ConfirmRegistrationRequest;
+import pl.edu.pw.ee.secureloansystem.domain.user.dto.ConfirmRegistrationResponse;
 import pl.edu.pw.ee.secureloansystem.domain.user.dto.LoginRequest;
 import pl.edu.pw.ee.secureloansystem.domain.user.dto.LoginResponse;
 import pl.edu.pw.ee.secureloansystem.domain.user.dto.RefreshTokenResponse;
@@ -60,5 +62,15 @@ class AuthController {
     RefreshTokenResponse refreshTokenResponse = tokenService.refreshToken(refreshToken);
     cookieService.addRefreshTokenCookie(response, refreshTokenResponse.getRefreshToken());
     return ResponseEntity.ok(refreshTokenResponse);
+  }
+
+  @PostMapping("/confirmRegistration")
+  public ResponseEntity<ConfirmRegistrationResponse> confirmRegistration(
+      @RequestBody @Valid ConfirmRegistrationRequest request, HttpServletResponse response
+  ) {
+    ConfirmRegistrationResponse confirmRegistrationResponse = authService.confirmRegistration(
+        request);
+    cookieService.addRefreshTokenCookie(response, confirmRegistrationResponse.getRefreshToken());
+    return ResponseEntity.ok(confirmRegistrationResponse);
   }
 }

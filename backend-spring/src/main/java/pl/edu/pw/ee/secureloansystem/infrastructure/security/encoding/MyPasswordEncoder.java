@@ -84,7 +84,7 @@ public class MyPasswordEncoder implements PasswordEncoder {
   private static ByteBuffer generateSalt() {
     byte[] salt = new byte[SALT_LENGTH];
     new SecureRandom().nextBytes(salt);
-    log.error("Generated salt: {}", salt);
+    log.debug("Generated salt: {}", salt);
     return ByteBuffer.wrap(salt);
   }
 

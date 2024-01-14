@@ -1,10 +1,7 @@
-package pl.edu.pw.ee.secureloansystem.domain.loan.dto;
+package pl.edu.pw.ee.secureloansystem.domain.user.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,18 +10,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LoanRequest {
-
-  @Positive
-  double amount;
+public class ConfirmRegistrationRequest {
 
   @Email
   @NotNull
-  String lenderEmail;
-
-  String purpose;
-
+  String email;
   @NotNull
-  @Future
-  LocalDate dueDate;
+  String code;
 }

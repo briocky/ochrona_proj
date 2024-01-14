@@ -52,6 +52,8 @@ public class User implements UserDetails {
   @Transient
   Set<GrantedAuthority> authorities = new HashSet<>();
 
+  boolean emailConfirmed;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;
@@ -84,6 +86,6 @@ public class User implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return emailConfirmed;
   }
 }

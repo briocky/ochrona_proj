@@ -2,6 +2,7 @@ package pl.edu.pw.ee.secureloansystem.domain.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
@@ -36,5 +37,6 @@ public class RegisterRequest {
   String confirmPassword;
 
   @NotNull
+  @Past
   LocalDate birthDate;
 }

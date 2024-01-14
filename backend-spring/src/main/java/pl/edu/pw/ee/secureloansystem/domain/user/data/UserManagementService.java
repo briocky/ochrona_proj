@@ -27,4 +27,8 @@ public class UserManagementService {
   public User createUser(User user) {
     return userRepository.save(user);
   }
+
+  public User updateUser(User updatedUser) {
+    return userRepository.save(updatedUser);
+  }
 }

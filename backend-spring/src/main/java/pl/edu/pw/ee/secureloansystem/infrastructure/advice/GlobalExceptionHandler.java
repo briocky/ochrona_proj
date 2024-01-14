@@ -60,6 +60,18 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
   }
 
+  @ExceptionHandler(EmailNotConfirmedException.class)
+  public ResponseEntity<String> handleEmailNotConfirmedException(EmailNotConfirmedException ex) {
+    log.error("Email not confirmed exception: ", ex);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(NoConfirmationCodeFoundException.class)
+  public ResponseEntity<String> handleNoConfirmationCodeFoundException(NoConfirmationCodeFoundException ex) {
+    log.error("Confirmation code not found exception: ", ex);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+  }
+
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
     log.error("Method argument validation exception: ", ex);

@@ -40,6 +40,7 @@ public class SecurityConfiguration {
     http.authorizeHttpRequests(request -> {
       request.requestMatchers("/api/auth/login").permitAll();
       request.requestMatchers("/api/auth/register").permitAll();
+      request.requestMatchers("/api/auth/confirmRegistration").permitAll();
 
       request.anyRequest().authenticated();
     });

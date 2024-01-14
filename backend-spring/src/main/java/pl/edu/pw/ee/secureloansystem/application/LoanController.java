@@ -1,5 +1,6 @@
 package pl.edu.pw.ee.secureloansystem.application;
 
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,7 +36,7 @@ class LoanController {
   }
 
   @PostMapping("/new")
-  public ResponseEntity<LoanDto> makeNewLoan(@RequestBody LoanRequest request) {
+  public ResponseEntity<LoanDto> makeNewLoan(@RequestBody @Valid LoanRequest request) {
     return ResponseEntity.status(HttpStatus.CREATED).body(loanService.makeNewLoan(request));
   }
 
